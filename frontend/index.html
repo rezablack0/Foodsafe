@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>FoodSafe</title>
+  </head>
+  <body>
+    <h1>Tambah Produk</h1>
+    <form id="productForm">
+      <input type="text" id="productId" placeholder="ID Produk" required />
+      <input type="text" id="name" placeholder="Nama Produk" required />
+      <input type="text" id="origin" placeholder="Asal Produk" required />
+      <input type="date" id="created" required />
+      <input type="date" id="expired" required />
+      <button type="submit">Simpan</button>
+    </form>
+
+    <script type="module">
+      import { backend } from "../.dfx/local/canisters/backend";
+
+      document.getElementById("productForm").addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const id = document.getElementById("productId").value;
+        const name = document.getElementById("name").value;
+        const origin = document.getElementById("origin").value;
+        const created_at = BigInt(new Date(document.getElementById("created").value).getTime() * 1_000_000);
+        const expiration = BigInt(new Date(document.getElementById("expired").value).getTime() * 1_000_000);
+
+        await backend.addProduct(id, name, origin, created_at, expiration);
+        alert("Produk berhasil ditambahkan!");
+      });
+    </script>
+  </body>
+</html>
